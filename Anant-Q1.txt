@@ -1,0 +1,16 @@
+#! /usr/bin/env python
+
+import sys			
+from scapy.all import *          #To use the built-in function of SCAPY
+
+a= raw_input("Please enter an IP address: ")  #Read input from the user
+b= IP(dst=a)                                  #Used to set the destination
+
+list1 = [c for c in b]			 
+if len(list1) != 1:			     #check if single IP is entered	
+	del list1[0]			     #delete network id
+	del list1[len(list1)-1]		     #delete broadcast id	
+for i in list1:				     #iterate over the final list of valid IPs	
+	l3=i/TCP(dport=[80,53])		     #Combining Layer 3 and 4 alond with the destination port 80 and 53	
+	l2=Ether()/l3                        #Combining Layer 2 and 3
+	l2.show()	                     #used to show the packets generated
